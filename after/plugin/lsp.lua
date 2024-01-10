@@ -16,22 +16,28 @@ require('mason-lspconfig').setup({
 lsp.preset('recommended')
 
 local cmp = require('cmp')
-local cmp_select = {bahavior = cmp.SelectBehavior.Select}
-local cmp_mappings = lsp.ddefaults.cmp_mappings({
-	['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
-	['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
-	['<C-y>'] = cmp.mapping.confirm({select - true}),
-	['<C-Space>'] = cmp.mapping.complete(),
+local cmp_action = require('lsp-zero').cmp_action()
+
+cmp.setup({
+	window = {
+		completion = cmp.config.window.bordered(),
+		documentation = cmp.config.window.bordered(),
+	},
+	mapping = lsp.defaults.cmp_mappings({
+		['<C-p>'] = cmp.mapping.select_prev_item(cmp_select),
+		['<C-n>'] = cmp.mapping.select_next_item(cmp_select),
+		['<C-y>'] = cmp.mapping.confirm({select = true}),
+		['<C-Space>'] = cmp.mapping.complete(),
+	})
 })
 
-lsp.set(preferences({ sign_icons = {} }))
+local cmp_select = {bahavior = cmp.SelectBehavior.Select}
 
-lsp.setup_nvim_cmp({
-	mapping = cmp_mappings
+lsp.set_preferences({ 
+	sign_icons = { } 
 })
 
 lsp.on_attach(function(client, bufnr)
-	print("help")
 	local opts = { buffer = bufnr, remap = false}
 
 	vim.keymap.set("n", "gd", function() vim.lsp.buf.definition() end, opts)
