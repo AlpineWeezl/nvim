@@ -1,2 +1,8 @@
+local wk = require('which-key')
+
 vim.g.mapleader = " "
-vim.keymap.set("n", "<leader>pv", vim.cmd.Ex)
+
+wk.register({
+	e = { vim.cmd.Ex, 'Netrw Directory Listing' }
+},{ prefix = '<leader>'})
+
